@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Mines Probability Engine</title>
+  <style>
+    body {
+      font-family: Arial;
+      text-align: center;
+      background: #111;
+      color: white;
+    }
+    button {
+      padding: 10px 20px;
+      margin: 10px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+
+<h1>Mines Probability Engine (5x5, 3 mines)</h1>
+
+<button onclick="runSimulation()">Run Simulation</button>
+
+<h2 id="result">Result will appear here</h2>
+
+<script>
+const SIZE = 25;
+const MINES = 3;
+
+function createBoard() {
+  let board = Array(SIZE).fill(0);
+  let mines = [];
+
+  while (mines.length < MINES) {
+    let r = Math.floor(Math.random() * SIZE);
+    if (!mines.includes(r)) {
+      mines.push(r);
+      board[r] = 1;
+    }
+  }
+
+  return board;
+}
+
+function simulate(trials = 100000) {
+  let safe = 0;
+
+  for (let i = 0; i < trials; i++) {
+    let board = createBoard();
+    let click = Math.floor(Math.random() * SIZE);
+
+    if (board[click] === 0) {
+      safe++;
+    }
+  }
+
+  return safe / trials;
+}
+
+function runSimulation() {
+  let prob = simulate(50000);
+  document.getElementById("result").innerText =
+    "Safe click probability: " + (prob * 100).toFixed(2) + "%";
+}
+</script>
+
+</body>
+</html>
